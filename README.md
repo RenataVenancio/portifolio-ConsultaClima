@@ -1,4 +1,4 @@
-🌤 Consulta Clima - Previsão do Tempo para São Paulo
+🌤 *Consulta Clima - Previsão do Tempo para São Paulo*
 
 Este é um script em Python que coleta a previsão do tempo para a cidade de São Paulo usando o Google e salva os dados em um arquivo Excel para histórico.
 
