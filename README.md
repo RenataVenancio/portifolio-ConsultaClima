@@ -5,7 +5,10 @@ Este é um script em Python que coleta a previsão do tempo para a cidade de Sã
 
 # 🚀 Funcionalidades
 
-✅ Consulta a temperatura e umidade do ar de São Paulo✅ Classifica a umidade do ar em diferentes alertas (baixa, média, alta)✅ Armazena os dados em um arquivo Excel (historico_temperatura.xlsx)✅ Interface gráfica simples para atualização manual dos dados
+✅ Consulta a temperatura e umidade do ar de São Paulo
+✅ Classifica a umidade do ar em diferentes alertas (baixa, média, alta)
+✅ Armazena os dados em um arquivo Excel (historico_temperatura.xlsx)
+✅ Interface gráfica simples para atualização manual dos dados
 
 # 📞 Pré-requisitos
 
