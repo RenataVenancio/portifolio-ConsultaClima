@@ -16,6 +16,7 @@ arquivo_excel = "historico_temperatura.xlsx"
 
 class ConsultaClima:
 
+    # Configurando a tela da aplicação
     def __init__(self):        
         self.janela = tk.Tk()
         self.janela.title("Previsão do Tempo")
@@ -119,7 +120,7 @@ class ConsultaClima:
         "Inicia o loop da interface"
         self.janela.mainloop()
 
-# Instanciando e iniciando o aplicativo
+# Instanciando e iniciando a tela da aplicação
 if __name__ == "__main__":
     app = ConsultaClima()
     app.iniciar()
