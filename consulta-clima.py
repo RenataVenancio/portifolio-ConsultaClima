@@ -1,4 +1,5 @@
-# Importando as bibliotecas necessárias
+# # Importando as bibliotecas necessárias
+from tkinter import messagebox
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -17,40 +18,39 @@ class ConsultaClima:
 
     def __init__(self):        
         self.janela = tk.Tk()
-        self.janela.title("Previsão do tempo de São Paulo")
-        self.janela.geometry("300x150")
+        self.janela.title("Previsão do Tempo")
+        self.janela.geometry("450x150")
         self.janela.resizable(False, False)
 
-        self.label = tk.Label(
-            self.janela, text="Atualizar previsão na planilha:", font=("Arial", 12)
-        )
-        self.label.pack(pady=10)
+        self.label = tk.Label(self.janela, text="Digite a cidade para pesquisar o clima:", font=("Arial", 11))
+        self.label.pack(pady=5)
+        
+        self.cidade_entry = tk.Entry(self.janela, font=("Arial", 10))
+        self.cidade_entry.pack(pady=10)
 
         self.botao = tk.Button(
             self.janela,
-            text = "Buscar previsão",
-            command = self.atualizar_previsao,
-            font = ("Arial", 10),
-            width = 20
+            text="Buscar previsão",
+            command=self.atualizar_previsao,
+            font=("Arial", 10),
+            width=20
         )
         self.botao.pack(pady=10)
 
     # Consulta para obter as informações do clima    
-    def obter_clima(self):
+    def obter_clima(self, cidade):
         try: 
             # Configurações para acessar o navegador
             options = webdriver.ChromeOptions()
-
-            # Configuração adicionada para realizar a consulta do clima
             options.add_argument("--disable-blink-features=AutomationControlled")  
             driver = webdriver.Chrome(options=options)
 
             # Acessando o Google
             driver.get("https://www.google.com")
 
-            # Pesquisando o clima da cidade de São Paulo
+            # Pesquisando o clima da cidade informada
             barra_pesquisa = driver.find_element(By.NAME, "q")
-            barra_pesquisa.send_keys("Temperatura em São Paulo")
+            barra_pesquisa.send_keys(f"Temperatura em {cidade}")
             time.sleep(1)
             barra_pesquisa.send_keys(Keys.RETURN)
             time.sleep(2)
@@ -77,8 +77,8 @@ class ConsultaClima:
         except:
             return None, None, "Erro ao obter os dados", None
     
-    # Função para salvar as informações da consulta no Excelz
-    def salvar_em_excel(self, temperatura, umidade, status_umidade, data_hora):
+    # Função para salvar as informações da consulta no Excel
+    def salvar_em_excel(self, temperatura, umidade, status_umidade, data_hora, cidade):
 
         # Verifica se o arquivo existe
         if os.path.exists(arquivo_excel):
@@ -89,23 +89,29 @@ class ConsultaClima:
             wb = Workbook()
             ws = wb.active
             # Adicionando Cabeçalho na planilha nova
-            ws.append(["Data / Hora", "Temperatura (°C)", "Umidade (%)", "Status Umidade"])
+            ws.append(["Data / Hora", "Cidade", "Temperatura (\u00b0C)", "Umidade (%)", "Status Umidade"])
 
         # Adicionando novos dados na planilha
-        ws.append([data_hora ,temperatura, umidade, status_umidade])
+        ws.append([data_hora, cidade, temperatura, umidade, status_umidade])
 
         # Salvando o arquivo Excel
         wb.save(arquivo_excel)
 
     # Responsável por dar start na aplicação ao clicar no botão
     def atualizar_previsao(self):
-
+        cidade = self.cidade_entry.get().strip()
+        if not cidade:
+            print("Por favor, digite uma cidade.")
+            return
+        
         # Executando a consulta de clima
-        temperatura, umidade, status_umidade, data_hora = self.obter_clima()
+        temperatura, umidade, status_umidade, data_hora = self.obter_clima(cidade)
 
         if temperatura and umidade:
-            self.salvar_em_excel(temperatura, umidade, status_umidade, data_hora)
-            print("Dados salvos: Temperatura {}°C, Umidade {}, Status: {}".format(temperatura, umidade, status_umidade))
+            self.salvar_em_excel(temperatura, umidade, status_umidade, data_hora, cidade)
+            print(f"Dados salvos para {cidade}: Temperatura {temperatura}\u00b0C, Umidade {umidade}, Status: {status_umidade}")
+            mensagem = f"Dados salvos para {cidade}:\nTemperatura: {temperatura}°C\nUmidade: {umidade}\nStatus: {status_umidade}"
+            messagebox.showinfo("Consulta Realizada", mensagem)
         else:
             print("Erro ao coletar os dados.")
 
