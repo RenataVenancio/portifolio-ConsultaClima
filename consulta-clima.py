@@ -110,7 +110,7 @@ class ConsultaClima:
 
         if temperatura and umidade:
             self.salvar_em_excel(temperatura, umidade, status_umidade, data_hora, cidade)
-            print(f"Dados salvos para {cidade}: Temperatura {temperatura}\u00b0C, Umidade {umidade}, Status: {status_umidade}")
+            print(f"Dados salvos para Cidade{cidade}: \nTemperatura {temperatura}\u00b0C, Umidade {umidade}, Status: {status_umidade}")
             mensagem = f"Dados salvos para {cidade}:\nTemperatura: {temperatura}°C\nUmidade: {umidade}\nStatus: {status_umidade}"
             messagebox.showinfo("Consulta Realizada", mensagem)
         else:
